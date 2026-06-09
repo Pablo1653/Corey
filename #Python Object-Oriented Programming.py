@@ -5,6 +5,11 @@
 class Employee:
 
     # Variable de clase.
+    """
+    Variables de clase: Son compartidas por todas las instancias (objetos) de esa clase. 
+    Si cambias su valor en la clase, el cambio se refleja en todos los objetos que no tengan su propia versión de esa variable. 
+    Se definen directamente dentro de la clase, fuera de cualquier método.
+    """
     # Es compartida por TODOS los empleados.
     # Se utiliza para contar cuántos empleados se han creado.
     num_of_emps = 0
@@ -12,7 +17,7 @@ class Employee:
     # Variable de clase.
     # Representa un aumento salarial del 4%.
     # Todos los empleados tendrán acceso a esta variable.
-    raise_amount = 1.04
+    raise_amt = 1.04
 
     # Constructor.
     # Se ejecuta automáticamente cada vez que se crea un nuevo Employee.
@@ -22,9 +27,14 @@ class Employee:
     # first = nombre
     # last = apellido
     # pay = salario
-    def __init__(self, first, last, pay):
-
+    def __init__(self, first, last, pay):#metodo inicializador o constructor con los atributos de instancia que se le pasan al crear un nuevo objeto Employee
+ 
         # Variables de instancia.
+        """
+        Variables de instancia: Son únicas para cada objeto. 
+        Cada instancia tiene su propia copia independiente. 
+        Se definen usualmente dentro del método
+        """
         # Cada empleado tendrá sus propios valores.
         self.first = first
         self.last = last
@@ -44,12 +54,6 @@ class Employee:
     def fullname(self):
         return '{} {}'.format(self.first, self.last)
 
-    # ESTE MÉTODO ESTÁ DUPLICADO.
-    # Python sobrescribirá el método anterior y conservará solamente este.
-    # En este caso no genera problemas porque ambos hacen exactamente lo mismo.
-    def fullname(self):
-        return '{} {}'.format(self.first, self.last)
-
     # Método que aplica un aumento salarial.
     def apply_raise(self):
 
@@ -60,7 +64,22 @@ class Employee:
         #
         # int() elimina posibles decimales.
         self.pay = int(self.pay * self.raise_amount)
+    
 
+    @classmethod # Decorador que indica que este método es un método de clase.
+    def set_raise_amt(cls, amount): # El primer argumento es cls, que representa la clase en sí (similar a self para instancias).#Este método se puede llamar tanto desde la clase como desde una instancia.
+        cls.raise_amt = amount
+    
+    @classmethod
+    def from_string(cls, emp_str): # Método de clase que toma una cadena con formato
+        first, last, pay = emp_str.split('-')
+        return cls(first, last, pay)
+    
+    @staticmethod
+    def is_workday(day): # Método estático que no depende de la clase ni de la instancia. Se puede llamar desde la clase o desde una instancia.
+        if day.weekday() == 5 or day.weekday() == 6: # Si el día es sábado (5) o domingo (6)
+            return False
+        return True
 
 # Antes de crear empleados el contador vale 0.
 print(Employee.num_of_emps)
@@ -72,10 +91,16 @@ print(Employee.num_of_emps)
 # Employee.__init__(emp_1, 'Corey', 'Schafer', 50000)
 #
 emp_1 = Employee('Corey', 'Schafer', 50000)
+emp_2= Employee('Test', 'User', 60000)
 
+import datetime
+my_date = datetime.date(2024, 6, 1)
+print(Employee.is_workday(my_date)) # Llamada al método estático desde la clase.
 
 # Creamos el segundo objeto Employee.
 emp_2 = Employee('Test', 'User', 60000)
+
+
 
 
 # Ahora el contador vale 2 porque creamos dos empleados.
@@ -94,8 +119,12 @@ print(Employee.num_of_emps)
 #     'pay': 50000
 # }
 #
-print(emp_1.__dict__)
 
+emp_1.set_raise_amt(1.05) # Cambiamos el aumento salarial a 5% utilizando el método de clase.
+
+print(Employee.raise_amt) # Accedemos a la variable de clase a través de la clase Employee.
+print(emp_1.raise_amt) # Accedemos a la variable de clase a través de la instancia emp_1.
+print(emp_2.raise_amt) # Accedemos a la variable de clase a través de la instancia emp_2.
 
 # Muestra los atributos del segundo empleado.
 print(emp_2.__dict__)
