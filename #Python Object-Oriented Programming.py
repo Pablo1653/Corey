@@ -27,6 +27,7 @@ class Employee:
     # first = nombre
     # last = apellido
     # pay = salario
+
     def __init__(self, first, last, pay):#metodo inicializador o constructor con los atributos de instancia que se le pasan al crear un nuevo objeto Employee
  
         # Variables de instancia.
@@ -48,7 +49,6 @@ class Employee:
         # Incrementamos el contador de empleados.
         # Como pertenece a la clase, accedemos mediante Employee.
         Employee.num_of_emps += 1
-
     # Método de instancia.
     # Devuelve el nombre completo del empleado.
     def fullname(self):
@@ -63,8 +63,10 @@ class Employee:
         # 50000 * 1.04 = 52000
         #
         # int() elimina posibles decimales.
-        self.pay = int(self.pay * self.raise_amount)
-    
+        self.pay = int(self.pay * self.raise_amt)
+
+
+
 
     @classmethod # Decorador que indica que este método es un método de clase.
     def set_raise_amt(cls, amount): # El primer argumento es cls, que representa la clase en sí (similar a self para instancias).#Este método se puede llamar tanto desde la clase como desde una instancia.
@@ -81,6 +83,35 @@ class Employee:
             return False
         return True
 
+class Developer(Employee): # La clase Developer hereda de Employee, lo que significa que tiene acceso a todos los atributos y métodos de Employee.
+    raise_amt = 1.10 # Sobrescribimos la variable de clase para los desarrolladores, que tendrán un aumento salarial del 10% en lugar del 4% general.
+
+    def __init__(self, first, last, pay,prog_lang): # Agregamos un nuevo atributo prog_lang para los desarrolladores.
+        super().__init__(first, last, pay) # Llamamos al constructor de la clase padre (Employee) para inicializar los atributos heredados.#usamos super() para llamar al constructor de la clase padre y evitar repetir código.
+        self.prog_lang = prog_lang # Inicializamos el nuevo atributo prog_lang específico de los desarrolladores.
+
+
+class Manager(Employee): # La clase Manager también hereda de Employee.
+    def __init__(self, first, last, pay, employees=None): # Agregamos un nuevo atributo employees para los gerentes, que es una lista de empleados que supervisan.
+        super().__init__(first, last, pay) # Llamamos al constructor de la clase padre (Employee) para inicializar los atributos heredados.
+        if employees is None: # Si no se proporciona una lista de empleados, inicializamos con una lista vacía.
+            self.employees = []
+        else:
+            self.employees = employees # Inicializamos el nuevo atributo employees específico de los gerentes.
+
+    def add_emp(self, emp): # Método para agregar un empleado a la lista de empleados supervisados por el gerente.
+        if emp not in self.employees:
+            self.employees.append(emp)
+
+    def remove_emp(self, emp): # Método para eliminar un empleado de la lista de empleados supervisados por el gerente.
+        if emp in self.employees:
+            self.employees.remove(emp)
+
+    def print_emps(self): # Método para imprimir la lista de empleados supervisados por el gerente.
+        for emp in self.employees:
+            print('-->', emp.fullname()) # Imprime el nombre completo de cada empleado supervisado por el gerente.
+
+
 # Antes de crear empleados el contador vale 0.
 print(Employee.num_of_emps)
 
@@ -90,22 +121,42 @@ print(Employee.num_of_emps)
 # Python ejecuta internamente:
 # Employee.__init__(emp_1, 'Corey', 'Schafer', 50000)
 #
-emp_1 = Employee('Corey', 'Schafer', 50000)
-emp_2= Employee('Test', 'User', 60000)
+emp_1 = Developer ('Corey','Schafer',50000,'Python') # Creamos una instancia de Employee con los atributos especificados.
+emp_2= Developer('Test', 'User', 60000,'Java')
+
+emp_3 = Manager('Sue', 'Smith', 90000, [emp_1]) # Creamos una instancia de Manager que supervisa a emp_1.
+
+print(emp_1.email) # Imprime el email generado automáticamente para emp_1.
+print(emp_2.email) # Imprime el email generado automáticamente para emp_2.
+print(emp_2.prog_lang) # Imprime el lenguaje de programación específico del desarrollador emp_2.
+print(emp_1.prog_lang) # Imprime el lenguaje de programación específico del desarrollador emp_1.
+print(emp_3.email) # Imprime el email generado automáticamente para emp_3.
+emp_3.print_emps() # Imprime la lista de empleados supervisados por emp_
+
+emp_3.add_emp(emp_2) # Agrega emp_2 a la lista de empleados supervisados por emp_3.
+emp_3.print_emps() # Imprime la lista actualizada de empleados supervisados por emp_3.
+emp_3.remove_emp(emp_2) # Elimina emp_1 de la lista de empleados supervisados por emp_3.
+emp_3.print_emps() # Imprime la lista actualizada de empleados supervisados por
 
 import datetime
 my_date = datetime.date(2024, 6, 1)
 print(Employee.is_workday(my_date)) # Llamada al método estático desde la clase.
 
-# Creamos el segundo objeto Employee.
-emp_2 = Employee('Test', 'User', 60000)
+
 
 
 
 
 # Ahora el contador vale 2 porque creamos dos empleados.
+#(una instancia de Employee y otra de Developer, que también es un tipo de Employee).
 print(Employee.num_of_emps)
 
+print(issubclass(Developer, Employee)) # Verifica si Developer es una subclase de Employee. Devuelve True.
+print(isinstance(emp_1, Employee)) # Verifica si emp_1 es una instancia de Employee. Devuelve True.
+print(isinstance(emp_1, Developer)) # Verifica si emp_1 es una instancia
+
+print(isinstance(emp_3, Manager)) # Verifica si emp_1 es una instancia de Manager.
+print(issubclass(Manager, Employee)) # Verifica si Manager es una subclase de Employee.
 
 # __dict__ muestra todos los atributos almacenados
 # dentro de una instancia.
@@ -123,8 +174,8 @@ print(Employee.num_of_emps)
 emp_1.set_raise_amt(1.05) # Cambiamos el aumento salarial a 5% utilizando el método de clase.
 
 print(Employee.raise_amt) # Accedemos a la variable de clase a través de la clase Employee.
-print(emp_1.raise_amt) # Accedemos a la variable de clase a través de la instancia emp_1.
-print(emp_2.raise_amt) # Accedemos a la variable de clase a través de la instancia emp_2.
+print(emp_1.raise_amt) # Accedemos a la variable de clase a través de la instancia dev_1.
+print(emp_2.raise_amt) # Accedemos a la variable de clase a través de la instancia dev_2.
 
 # Muestra los atributos del segundo empleado.
 print(emp_2.__dict__)
