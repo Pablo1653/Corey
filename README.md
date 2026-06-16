@@ -1,291 +1,364 @@
-
 Programación Orientada a Objetos en Python
 
-Este código muestra los conceptos fundamentales de POO (Programación Orientada a Objetos) en Python: clases, objetos, atributos, métodos de instancia, métodos de clase y métodos estáticos.
+Este proyecto muestra los conceptos fundamentales e intermedios de Programación Orientada a Objetos (POO) en Python utilizando una estructura similar a la que se utiliza en frameworks profesionales como Django.
 
-1. Definición de la clase
+A lo largo del código se trabajan:
 
-Aquí definimos una clase llamada Employee.
+Clases
+Objetos
+Atributos de instancia
+Atributos de clase
+Métodos de instancia
+Métodos de clase
+Métodos estáticos
+Herencia
+Sobrescritura de atributos
+Uso de super()
+Relaciones entre objetos
+isinstance()
+issubclass()
+1. Clase Employee
 
-¿Qué es una clase?
+La clase Employee representa un empleado genérico.
 
-Una clase es un molde o plantilla para crear objetos.
+Es la clase base del proyecto.
 
-Por ejemplo:
+class Employee:
 
-emp_1 y emp_2 son objetos (instancias) creados a partir de la clase Employee.
+Todos los empleados tendrán:
 
-2. Variables de clase
+Nombre
+Apellido
+Email
+Salario
+2. Variables de Clase
 
-Estas variables pertenecen a la clase, no a un objeto individual.
+Las variables de clase son compartidas por todas las instancias.
 
+num_of_emps = 0
+raise_amt = 1.04
 num_of_emps
 
-Cuenta cuántos empleados se han creado.
-
-Se comparte entre todas las instancias.
+Cuenta cuántos empleados fueron creados.
 
 raise_amt
 
 Representa un aumento salarial del 4%.
 
-1.04 significa:
+1.04
 
-1 = 100% del salario original
+Significa:
 
-0.04 = 4% extra
+100% del salario original
+4% adicional
+3. Constructor (init)
 
-Diferencia importante
+El constructor se ejecuta automáticamente cuando creamos un objeto.
 
-Variables de clase → compartidas por todos los objetos.
+def __init__(self, first, last, pay):
 
-Variables de instancia → cada objeto tiene su propia copia.
+Parámetros:
 
-3. Constructor __init__
+self → instancia actual
+first → nombre
+last → apellido
+pay → salario
+4. Variables de Instancia
 
-Este es el constructor.
+Dentro del constructor se crean atributos propios de cada objeto.
 
-Se ejecuta automáticamente cuando se crea un nuevo objeto.
+self.first = first
+self.last = last
+self.email = first + '.' + last + '@company.com'
+self.pay = pay
 
-Parámetros
+Cada empleado tendrá sus propios valores.
 
-self → representa la instancia actual del objeto.
+5. Contador de Empleados
 
-first → nombre del empleado.
+Cada vez que se crea una instancia:
 
-last → apellido.
+Employee.num_of_emps += 1
 
-pay → salario.
+El contador aumenta automáticamente.
 
-Dentro del constructor
+Ejemplo:
 
-Aquí se crean atributos de instancia.
+0 → 1 → 2 → 3
+6. Método fullname()
 
-Cada empleado tendrá sus propios valores:
+Devuelve el nombre completo del empleado.
 
-first
-last
-email
-pay
-Ejemplo
+def fullname(self):
+    return '{} {}'.format(self.first, self.last)
 
-Para:
+Ejemplo:
 
-los atributos quedan así:
-
-4. Incrementar el contador de empleados
-
-Cada vez que se crea un nuevo empleado:
-
-0 → 1
-
-1 → 2
-
-2 → 3
-
-Se accede mediante Employee porque num_of_emps es una variable de clase.
-
-5. Método de instancia fullname
-
-Este método devuelve el nombre completo del empleado.
-
-Ejemplo
-
-devuelve:
-
-Importante
-
-Los métodos de instancia siempre reciben self como primer argumento.
-
-Python automáticamente pasa la instancia actual.
-
-6. Método de instancia apply_raise
-
-Aplica un aumento salarial al empleado.
-
-Paso a paso
-
-Si:
-
-Entonces:
-
-int() convierte el resultado a entero.
-
-Resultado
-
-El salario del empleado queda actualizado.
-
-7. Método de clase set_raise_amt
-
-Este es un método de clase.
-
-¿Qué significa @classmethod?
-
-El decorador @classmethod indica que el método recibe la clase como primer argumento en lugar de una instancia.
-
-cls representa la clase Employee.
-
-¿Para qué sirve?
-
-Permite modificar datos compartidos por toda la clase.
-
-Ejemplo
-
-Internamente Python hace algo similar a:
-
-Y ahora:
-
-Todos los empleados verán el nuevo valor.
-
-8. Método de clase alternativo from_string
-
-Este método permite crear empleados a partir de una cadena de texto.
-
-Ejemplo
-Qué ocurre
-
-split('-') divide la cadena.
-
-Se obtienen first, last y pay.
-
-return cls(...) crea y devuelve un nuevo objeto Employee.
-
-Ventaja
-
-Es una forma alternativa y limpia de crear objetos.
-
-9. Método estático is_workday
-
-Este es un método estático.
-
-¿Qué significa @staticmethod?
-
-El método:
-
-no recibe self
-
-no recibe cls
-
-no depende ni de la instancia ni de la clase
-
-Es simplemente una función relacionada lógicamente con la clase.
-
-Qué hace
-
-Determina si un día es laborable.
-
-weekday() devuelve un número:
-
-0 = lunes
-
-1 = martes
-
-...
-
-5 = sábado
-
-6 = domingo
-
-Si el día es sábado o domingo, devuelve False.
-
-Ejemplo
-
-2024-06-01 es sábado, por lo tanto imprime:
-
-10. Creación de objetos y contador
-
-Antes de crear empleados:
-
-Luego:
-
-Ahora el contador vale:
-
-porque el constructor incrementó num_of_emps dos veces.
-
-11. __dict__
-
-__dict__ muestra todos los atributos almacenados en la instancia.
+emp_1.fullname()
 
 Resultado:
 
-Es útil para depuración y para entender qué datos contiene el objeto.
+Corey Schafer
+7. Método apply_raise()
 
-12. Acceso a variables de clase
+Aplica un aumento salarial.
 
-Todas imprimen el mismo valor.
+self.pay = int(self.pay * self.raise_amt)
 
-¿Por qué?
+Ejemplo:
 
-Cuando accedes desde una instancia:
+50000 × 1.04 = 52000
+8. Métodos de Clase
+set_raise_amt()
 
-Python busca:
+Permite modificar el aumento salarial de toda la clase.
 
-Primero en la instancia emp_1
+@classmethod
+def set_raise_amt(cls, amount):
 
-Si no lo encuentra, busca en la clase Employee
+Ejemplo:
 
-Como raise_amt está en la clase, las instancias lo heredan.
+Employee.set_raise_amt(1.05)
 
-13. Llamada a métodos
+Ahora todos los empleados utilizan:
 
-Python internamente lo transforma en:
+raise_amt = 1.05
+from_string()
 
-Por eso también funciona:
+Permite crear empleados a partir de texto.
 
-emp_1 se pasa manualmente como argumento self.
+emp_str = 'John-Doe-70000'
 
-14. Conceptos clave que enseña este código
-Clase
+Internamente:
 
-El molde:
+first, last, pay = emp_str.split('-')
 
-Instancia/Objeto
+y luego:
 
-Los objetos creados:
+return cls(first, last, pay)
+9. Métodos Estáticos
+is_workday()
 
-Atributos de instancia
+Verifica si una fecha corresponde a un día laboral.
 
-Datos propios de cada empleado:
+@staticmethod
 
-first
-last
+No utiliza:
+
+self
+cls
+
+Simplemente está relacionada lógicamente con la clase.
+
+Ejemplo:
+
+datetime.date(2024, 6, 1)
+
+Resultado:
+
+False
+
+porque es sábado.
+
+10. Herencia
+
+Una de las características más importantes de la POO.
+
+class Developer(Employee):
+
+Significa:
+
+Developer ES un Employee
+
+Por lo tanto hereda:
+
+fullname()
+apply_raise()
+set_raise_amt()
+from_string()
+is_workday()
 email
 pay
-Atributos de clase
+first
+last
+11. Sobrescritura de Variables de Clase
 
-Datos compartidos:
+La clase Developer redefine:
 
-num_of_emps
-raise_amt
-Métodos de instancia
+raise_amt = 1.10
 
-Trabajan con datos del objeto:
+Ahora los desarrolladores reciben:
 
-fullname
-apply_raise
-Métodos de clase
+10% de aumento
 
-Trabajan con la clase:
+mientras que los empleados normales reciben:
 
-set_raise_amt
-from_string
-Métodos estáticos
+4% de aumento
+12. Uso de super()
 
-Funciones relacionadas con la clase pero independientes:
+El constructor de Developer utiliza:
 
-is_workday
-15. Relación con Django
+super().__init__(first, last, pay)
 
-Todo esto es fundamental para Django porque:
+Esto ejecuta el constructor de Employee.
 
-Un modelo Django es una clase.
+Equivale a:
 
-Los registros de la base de datos son instancias de esa clase.
+Employee.__init__(self, first, last, pay)
 
-Los métodos de modelo funcionan igual que fullname o apply_raise.
+pero es más limpio y recomendable.
 
-Los managers y métodos de clase en Django usan los mismos conceptos de @classmethod.
+13. Atributos Exclusivos de Developer
+
+Los desarrolladores poseen un atributo adicional:
+
+prog_lang
+
+Ejemplo:
+
+dev_1 = Developer(
+    'Corey',
+    'Schafer',
+    50000,
+    'Python'
+)
+print(dev_1.prog_lang)
+
+Resultado:
+
+Python
+14. Clase Manager
+
+La clase Manager también hereda de Employee.
+
+class Manager(Employee):
+
+Además posee una lista de empleados supervisados.
+
+employees
+15. Relaciones entre Objetos
+
+Un Manager puede contener objetos Employee o Developer.
+
+emp_3 = Manager(
+    'Sue',
+    'Smith',
+    90000,
+    [emp_1]
+)
+
+Esto crea una relación:
+
+Manager
+│
+├── Developer (Corey)
+16. Agregar Empleados
+emp_3.add_emp(emp_2)
+
+Resultado:
+
+Manager
+│
+├── Corey
+└── Test
+17. Eliminar Empleados
+emp_3.remove_emp(emp_2)
+
+Resultado:
+
+Manager
+│
+└── Corey
+18. Mostrar Empleados Supervisados
+emp_3.print_emps()
+
+Salida:
+
+--> Corey Schafer
+--> Test User
+19. isinstance()
+
+Permite verificar si un objeto pertenece a una clase.
+
+isinstance(emp_1, Employee)
+
+Resultado:
+
+True
+isinstance(emp_1, Developer)
+
+Resultado:
+
+True
+
+porque un Developer también es un Employee.
+
+20. issubclass()
+
+Permite verificar relaciones entre clases.
+
+issubclass(Developer, Employee)
+
+Resultado:
+
+True
+issubclass(Manager, Employee)
+
+Resultado:
+
+True
+21. dict
+
+Muestra todos los atributos almacenados en un objeto.
+
+print(emp_1.__dict__)
+
+Resultado:
+
+{
+    'first': 'Corey',
+    'last': 'Schafer',
+    'email': 'Corey.Schafer@company.com',
+    'pay': 50000,
+    'prog_lang': 'Python'
+}
+
+Muy útil para depuración.
+
+22. Conceptos de POO Aprendidos
+Concepto	Ejemplo
+Clase	Employee
+Objeto	emp_1
+Herencia	Developer(Employee)
+Constructor	init
+Método de instancia	fullname()
+Método de clase	set_raise_amt()
+Método estático	is_workday()
+Variable de clase	raise_amt
+Variable de instancia	first
+Sobrescritura	raise_amt = 1.10
+super()	super().init()
+Relación entre objetos	Manager → Employees
+Verificación de tipos	isinstance()
+Verificación de herencia	issubclass()
+23. Relación con Django
+
+Este proyecto es una excelente introducción a Django porque los mismos conceptos aparecen constantemente.
 
 Por ejemplo:
 
-Es exactamente la misma idea de orientación a objetos que aprendiste con Employee.
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+
+es simplemente una clase.
+
+Cada registro de la base de datos es una instancia:
+
+product = Product.objects.get(id=1)
+
+Además:
+
+Los modelos usan herencia.
+Los managers funcionan como métodos de clase.
+Las relaciones ForeignKey son similares a la relación Manager → Employees.
+Los métodos de modelo funcionan igual que fullname() o apply_raise().
