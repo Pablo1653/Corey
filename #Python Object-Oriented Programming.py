@@ -28,7 +28,7 @@ class Employee:
     # last = apellido
     # pay = salario
 
-    def __init__(self, first, last, pay):#metodo inicializador o constructor con los atributos de instancia que se le pasan al crear un nuevo objeto Employee
+    def __init__(self, first, last, pay):#metodo inicializador Dunder "Double underscore" (magic method) o constructor con los atributos de instancia que se le pasan al crear un nuevo objeto Employee
  
         # Variables de instancia.
         """
@@ -43,7 +43,7 @@ class Employee:
         # Construimos automáticamente un email.
         self.email = first + '.' + last + '@company.com'
 
-        # Guardamos el salario.nada     
+        # Guardamos el salario 
         self.pay = pay
 
         # Incrementamos el contador de empleados.
@@ -65,8 +65,18 @@ class Employee:
         # int() elimina posibles decimales.
         self.pay = int(self.pay * self.raise_amt)
 
+    def __repr__(self):
+        return "Developer('{}', '{}', '{}')".format(self.first, self.last, self.pay)#Metodo especial __repr__ que devuelve una representación oficial del objeto, útil para depuración. En este caso, devuelve una cadena que muestra el nombre de la clase y los atributos del objeto.Sino se define __repr__, Python mostrará una representación genérica del objeto, como <__main__.Employee object at 0x000001F34A8B6C40>.
+        
+    def __str__(self):
+        return '{} - {}'.format(self.fullname(), self.email) # Metodo especial __str__ que devuelve una representación legible del objeto. En este caso, devuelve el nombre completo y el email del empleado. Si se define __str__, Python usará esta representación cuando se imprima el objeto. Si no se define __str__, pero sí __repr__, Python usará la representación de __repr__.
 
-
+    def __add__(self, other): # Método especial __add__ que define el comportamiento de la suma entre dos objetos Employee. En este caso, devuelve la suma de los salarios de ambos empleados. Si se intenta sumar dos objetos Employee, Python llamará automáticamente a este método.
+        return self.pay + other.pay
+    
+    def __len__(self): # Método especial __len__ que define el comportamiento de la función len() aplicada a un objeto Employee. En este caso, devuelve la longitud del nombre completo del empleado. Si se intenta usar len() con un objeto Employee, Python llamará automáticamente a este método.
+        return len(self.fullname())
+    
 
     @classmethod # Decorador que indica que este método es un método de clase.
     def set_raise_amt(cls, amount): # El primer argumento es cls, que representa la clase en sí (similar a self para instancias).#Este método se puede llamar tanto desde la clase como desde una instancia.
@@ -112,6 +122,8 @@ class Manager(Employee): # La clase Manager también hereda de Employee.
             print('-->', emp.fullname()) # Imprime el nombre completo de cada empleado supervisado por el gerente.
 
 
+        
+    
 # Antes de crear empleados el contador vale 0.
 print(Employee.num_of_emps)
 
@@ -121,11 +133,14 @@ print(Employee.num_of_emps)
 # Python ejecuta internamente:
 # Employee.__init__(emp_1, 'Corey', 'Schafer', 50000)
 #
-emp_1 = Developer ('Corey','Schafer',50000,'Python') # Creamos una instancia de Employee con los atributos especificados.
+emp_1 = Developer ('Corey','Schafer',55000,'Python') # Creamos una instancia de Employee con los atributos especificados.
 emp_2= Developer('Test', 'User', 60000,'Java')
 
 emp_3 = Manager('Sue', 'Smith', 90000, [emp_1]) # Creamos una instancia de Manager que supervisa a emp_1.
 
+print(len(emp_1)) # Llama al método __len__ definido en la clase Employee, que devuelve la longitud del nombre completo de emp_1.
+print(emp_1+emp_2) # Suma los salarios de emp_1 y emp_2 utilizando el método __add__ definido en la clase Employee.
+print(emp_1) # Imprime la referencia del objeto emp_1. Sin un método __str__ o __repr__, mostrará algo como <__main__.Employee object at 0x000001F34A8B6C40>.
 print(emp_1.email) # Imprime el email generado automáticamente para emp_1.
 print(emp_2.email) # Imprime el email generado automáticamente para emp_2.
 print(emp_2.prog_lang) # Imprime el lenguaje de programación específico del desarrollador emp_2.
@@ -146,8 +161,6 @@ print(Employee.is_workday(my_date)) # Llamada al método estático desde la clas
 
 
 
-
-# Ahora el contador vale 2 porque creamos dos empleados.
 #(una instancia de Employee y otra de Developer, que también es un tipo de Employee).
 print(Employee.num_of_emps)
 
