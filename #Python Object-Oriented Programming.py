@@ -133,10 +133,20 @@ print(Employee.num_of_emps)
 # Python ejecuta internamente:
 # Employee.__init__(emp_1, 'Corey', 'Schafer', 50000)
 #
-emp_1 = Developer ('Corey','Schafer',55000,'Python') # Creamos una instancia de Employee con los atributos especificados.
+emp_1=Employee('Laura','Selena','69696')
+
+print(emp_1.first) # Accedemos al atributo first del objeto emp_1, que devuelve 'Laura'.
+print(emp_1.email) # Accedemos al atributo email del objeto emp_1, que devuelve '
+print(emp_1.fullname()) # Llamamos al método fullname del objeto emp_1, que devuelve 'Laura Selena'.
+
+
+emp_1 = Developer ('Corey','Schafer',5500096,'Python') # Creamos una instancia de Employee con los atributos especificados.
+emp_1.first='Agus' # Accedemos al atributo first del objeto emp_1, que devuelve 'Corey'.
+emp_1.apply_raise() # Aplicamos el aumento salarial al primer empleado utilizando el método apply_raise definido en la clase Employee. Esto aumentará su salario en un 10% debido a que emp_1 es una instancia de Developer, que tiene un raise_amt de 1.10.
+
 emp_2= Developer('Test', 'User', 60000,'Java')
 
-emp_3 = Manager('Sue', 'Smith', 90000, [emp_1]) # Creamos una instancia de Manager que supervisa a emp_1.
+emp_3 = Manager('Sue', 'Smith', 13000120, [emp_1]) # Creamos una instancia de Manager que supervisa a emp_1.
 
 print(len(emp_1)) # Llama al método __len__ definido en la clase Employee, que devuelve la longitud del nombre completo de emp_1.
 print(emp_1+emp_2) # Suma los salarios de emp_1 y emp_2 utilizando el método __add__ definido en la clase Employee.
